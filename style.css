@@ -1,5 +1,11 @@
 :root {
   transition-duration: 500ms;
+  --pink: oklch(0.61 0.14 0);
+  --yellow: oklch(from var(--pink) l c 85);
+  --green: oklch(from var(--pink) l c 150);
+  --turqoise: oklch(from var(--pink) l c 210);
+  --blue: oklch(from var(--pink) l c 260);
+  --purple: oklch(from var(--pink) l c 295);
 }
 
 .slidev-layout.chat {
@@ -18,4 +24,33 @@
 
 .slidev-slide-content {
   box-sizing: border-box;
+}
+
+.slidev-layout p {
+  margin-bottom: 0.8em;
+  line-height: 110%;
+}
+
+.slidev-layout.default p,
+.slidev-layout.full p,
+.slidev-layout.image-right p,
+.slidev-layout.image-left p {
+  font-size: 24pt;
+  line-height: 130%;
+}
+
+.slidev-layout.default h2,
+.slidev-layout.full h2,
+.slidev-layout.image-right h2,
+.slidev-layout.image-left h2 {
+  font-size: 36pt;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  line-height: 130%;
+}
+
+.eqn {
+  text-align: center;
+  font-size: 24pt;
+  margin-bottom: 0.6em;
 }

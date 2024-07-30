@@ -11,9 +11,10 @@ const sideDependent = computed(() => ({
 .row {
   display: flex;
   justify-content: v-bind("sideDependent.rowJustify");
+  text-align: v-bind("sideDependent.rowJustify");
 
   font-style: italic;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.1em;
 }
 
 .sender {
@@ -22,6 +23,9 @@ const sideDependent = computed(() => ({
 
 :deep(span.content em) {
   font-style: normal;
+}
+
+:deep(span.content) {
 }
 </style>
 

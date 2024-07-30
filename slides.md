@@ -34,35 +34,184 @@ layout: image-right
 image: images/voynich176.jpg
 ---
 
-<style>
-  :root {
-    --uno: "text-size-2xl"
-  }
-</style>
-
 <div class="
   h-full
   flex
   flex-col
   flex-justify-center
+  text-size-2xl
 ">
 <v-clicks>
 
 **Basics**
 
-**SSH** <small>with an aside on key exchange</small>
+**SSH** <small>and key exchange</small>
 
-**TLS** <small>with an aside on certificates</small>
+**HTTPS** <small>and certificates</small>
 
 </v-clicks>
 </div>
+
+---
+layout: full
+transition: slide-left
+---
+
+<p v-click>
+<b>Encryption:</b> Using an algorithm to combine some data with a key so it can only be read by an
+intended recipient
+</p>
+
+<p v-click>
+<b>Symmetric Encryption:</b> Using the same key to encrypt and decrypt data
+</p>
+
+<div class="eqn">
+<span v-click>My Secret Data &#8727; <Key hue="150">K</Key></span> <span v-click>&#8658; <Encrypt key-id="K" hue="160">My Secret Data</Encrypt></span>
+</div>
+
+<div class="eqn">
+<span v-click><Encrypt key-id="K" hue="160">My Secret Data</Encrypt></span> <span v-click>&#8727; <Key hue="160">K</Key> &#8658; My Secret Data</span>
+</div>
+
+<p v-click>
+Bootstrapping problem: You already need the secret, <Key hue="150">K</Key>, to send or receive
+anything
+</p>
+
+
+---
+layout: full
+transition: slide-left
+---
+
+
+<p v-click>
+<b>Asymmetric Encryption:</b> A family of algorithms which use one key for encryption, and another key for decryption.
+</p>
+
+<div v-click class="eqn">
+  <Key hue="295">a, A</Key>
+</div>
+
+<div v-click class="eqn">
+My Secret Data &#8727; <Key hue="295">A</Key> &#8658; <Encrypt key-id="A" hue="295">My Secret Data</Encrypt>
+</div>
+
+<div v-click class="eqn">
+<Encrypt key-id="A" hue="295">My Secret Data</Encrypt> &#8727; <Key hue="295">a</Key> &#8658; My Secret Data
+</div>
+
+<!--
+Asymmetric encryption is what we're focusing on today. The idea is different keys
+[click] Let's call this pair of keys little a and big a
+[click] You encrypt with one...
+[click] But need to use the other to decrypt. The same would work in reverse
+
+I don't want to go into the details of the maths today. What you do need to know
+is some very clever people developed these systems using the properties of certain
+mathematical operations.
+When people say prime numbers are important for cryptography, they mean this.
+Rivest, Shamir and Adleman invented the first system that could do this in the '70s,
+and it relies on prime numbers.
+These days we also have systems that use operations on functions called Elliptic Curves as well.
+-->
 
 ---
 layout: chat
 transition: slide-left
 ---
 
-<AliceThinks v-click="[0, 6]">dials Bob's server on port 22</AliceThinks>
+<AliceThinks v-click>generates key-pair <AliceKey>(a, A)</AliceKey>.
+  She keeps <AliceKey>a</AliceKey> private and publishes <AliceKey>A</AliceKey></AliceThinks>
+<BobThinks v-click>generates key-pair <BobKey>(b, B)</BobKey>.
+  He keeps <BobKey>b</BobKey> private and publishes <BobKey>B</BobKey></BobThinks>
+<AliceThinks v-click>wants to send Bob a message only he can read</AliceThinks>
+<AliceThinks v-click>computes <em>&ldquo;made you look&rdquo; &#8727; <BobKey>B</BobKey> &#8658; <BobEncrypts key-id="B">made you look</BobEncrypts></em></AliceThinks>
+<Alice v-click tag="To: bob@bob.net"><BobEncrypts key-id="B">made you look</BobEncrypts></Alice>
+<BobThinks v-click>computes <em><BobEncrypts key-id="B">made you look</BobEncrypts> &#8727; <BobKey>b</BobKey> &#8658; &ldquo;made you look&rdquo; </em></BobThinks>
+<Bob v-click tag="To: alice@alice.com">😠 😠 😠</Bob>
+
+---
+layout: full
+transition: slide-left
+---
+
+<p v-click>
+<b>Signing</b> is a special usage of this where you encrypt something with your own private key.
+</p>
+
+<div v-click class="eqn">
+Alice is very clever &#8727; <Key hue="85">a</Key> &#8658; <Encrypt key-id="a" hue="85">Alice is very clever</Encrypt>
+</div>
+
+<p v-click>
+Anyone can decrypt this with Alice's public key <AliceKey>A</AliceKey> and confirm Alice wrote it.
+</p>
+
+<p v-click>
+A <b>signature</b> is when you attach a publicly-decryptable bit of data to something to prove authorship.
+</p>
+
+
+---
+layout: full
+transition: slide-left
+---
+
+<p v-click >
+<b>Hashing:</b> running a <em>deterministic</em>, <em>irreversible</em> computation to transform data to
+  into a <em>fixed-size</em> output, a.k.a. a <b>hash</b> or <b>checksum</b>.
+</p>
+
+<div v-click class="eqn" >
+hash(&ldquo;My cool input&rdquo;) &#8658; &ldquo;6cdc01e200329e91...&rdquo;
+</div>
+
+<ul style="font-size: 24pt">
+<li v-click>Checking integrity of files</li>
+<li v-click>Storing passwords safely</li>
+<li v-click>Posting plot-twist predictions to Twitter</li>
+</ul>
+
+---
+layout: image-left
+image: images/voynich174.jpg
+---
+
+<p>
+<em>We can now...</em>
+</p>
+
+<p v-click>
+send a message only readable by an intended recipient
+</p>
+
+<p v-click>
+prove a message was encrypted by someone
+</p>
+
+<p v-click>
+prove posession of some data without sending it
+</p>
+
+---
+layout: image-right
+image: images/voynich111.jpg
+---
+
+<p>
+<b>SSH Handshake</b>
+</p>
+
+<p> Bootstrapping an encrypted channel without sharing a key beforehand</p>
+
+---
+layout: chat
+transition: slide-left
+---
+
+<AliceThinks v-click="[1, 6]">dials Bob's server on port 22</AliceThinks>
 <Alice v-click="[1, 6]" tag="TCP SYN">Hi, how are you?</Alice>
 <Bob v-click="[2, 6]" tag="TCP SYN, ACK">Hi, I'm ok, how are you?</Bob>
 <Alice v-click="[3, 6]" tag="TCP ACK">I'm ok too </Alice>
@@ -112,21 +261,22 @@ layout: chat
 transition: slide-up
 ---
 
-<AliceThinks v-click="[1, 6]">generates a key-pair <em>(p, P)</em></AliceThinks>
-<BobThinks v-click="[2, 6]">generates a key-pair <em>(q, Q)</em></BobThinks>
-<Alice v-click="[3, 6]" tag="SSH_MSG_KEX_ECDH_INIT">Here's my public key, <em>P</em></Alice>
+<AliceThinks v-click="[1, 6]">generates a key-pair <AliceKey>(p, P)</AliceKey></AliceThinks>
+<Alice v-click="[2, 6]" tag="SSH_MSG_KEX_ECDH_INIT">Here's my ephemeral public key, <AliceKey>P</AliceKey></Alice>
 
-<BobThinks v-click="4">combines <em>P</em> and q to produce a shared key, <em>K</em></BobThinks>
-<Bob v-click="[5, 9]" tag="SSH_MSG_KEX_ECDH_REPLY">Here's <em>B</em>, <em>Q</em> and <em>hash(K)</em></Bob>
+<BobThinks v-click="[3, 6]">generates a key-pair <BobKey>(q, Q)</BobKey></BobThinks>
+<BobThinks v-click="4">combines <AliceKey>P</AliceKey> and <BobKey>q</BobKey> to produce a shared key, <Key hue="150">K</Key></BobThinks>
+<Bob v-click="[5, 10]" tag="SSH_MSG_KEX_ECDH_REPLY">Here's my static public key <BobKey>B</BobKey>, my ephemeral public key <BobKey>Q</BobKey>, and <em>hash(<Key hue="150">K</Key>)</em></Bob>
 
-<AliceThinks v-click="[7, 9]">checks <em>B</em> matches her records</AliceThinks>
-<AliceThinks v-click="8">combines <em>p</em> and <em>Q</em> to produce the same shared key, <em>K</em></AliceThinks>
+<AliceThinks v-click="[7, 10]">checks <BobKey>B</BobKey> matches her records</AliceThinks>
+<AliceThinks v-click="8">combines <AliceKey>p</AliceKey> and <BobKey>Q</BobKey> to produce the same shared key, <Key hue="150">K</Key></AliceThinks>
+<AliceThinks v-click="9">calculates <em>hash(<Key hue="150">K</Key>)</em> and confirms it matches what Bob sent</AliceThinks>
 
-<hr v-click="9" class="my-3"/>
+<hr v-click="10" class="my-5"/>
 
-<p v-click="10"><em>K</em> is a short-lived and symmetric key</p>
-<p v-click="11">Alice and Bob created it co-operatively <em>and</em> independently</p>
-<p v-click="12">They got the same result without transmitting private material</p>
+<p v-click="11"><Key hue="150">K</Key> is a short-lived and symmetric key</p>
+<p v-click="12">Alice and Bob created it co-operatively <em>and</em> independently</p>
+<p v-click="13">They got the same result without transmitting private material</p>
 
 <!--
 Back to Alice and Bob.
@@ -137,7 +287,9 @@ We've done maths on two different pieces of information and got the same result.
 
 [click] This is what we wanted by doing this at all
 [click] They both had to participate to get this result, and can check each other's work
-[click] They sent a hash, but not K itself, so everything private is private
+[click] They sent a hash, but not K itself, so everything private is private.
+
+We've put together a secure channel with these useful properties. That's Diffie Hellman key exchange.
 
 -->
 
@@ -157,11 +309,10 @@ transition: slide-left
 <hr class="my-3" v-click="2"/>
 
 <Alice v-click="3" tag="SSH_MSG_USERAUTH_REQUEST">
-  <Encrypt key-id="K" :hue="150">Here's <em>A</em> and <AliceEncrypts key-id="a"><em>hash(K)</em></AliceEncrypts></Encrypt>
+  <Encrypt key-id="K" :hue="150">Here's <AliceKey>A</AliceKey> and <AliceEncrypts key-id="a"><em>hash(<Key hue="150">K</Key>)</em></AliceEncrypts></Encrypt>
 </Alice>
-<BobThinks v-click="4">checks <em>A</em> against his records</BobThinks>
-<BobThinks v-click="5">uses <em>A</em> to confirm the signed hash</BobThinks>
-<Bob v-click="6" tag="SSH_MSG_USERAUTH_SUCCESS">
+<BobThinks v-click="4">checks <AliceKey>A</AliceKey> against his records and uses it to confirm the signed hash</BobThinks>
+<Bob v-click="5" tag="SSH_MSG_USERAUTH_SUCCESS">
   <Encrypt key-id="K" :hue="150">Looks good, come in</Encrypt>
 </Bob>
 
@@ -193,3 +344,137 @@ Bob verified the client has Alice's private key
 They've got an encrypted channel for the session
 
 </v-clicks>
+
+---
+layout: image-right
+image: images/voynich156.jpg
+---
+
+<v-clicks>
+
+**TLS 1.3 Handshake**
+
+Diffie-Hellman still works for setting up an encrypted channel
+
+Proving server identity is harder
+
+</v-clicks>
+
+---
+layout: chat
+transition: slide-left
+---
+
+<AliceThinks v-click="[0, 1]">dials Bob's server on port 443</AliceThinks>
+<Alice v-click="[0, 1]" tag="TCP SYN">Hi, how are you?</Alice>
+<Bob v-click="[0, 1]" tag="TCP SYN, ACK">Hi, I'm ok, how are you?</Bob>
+<Alice v-click="[0, 1]" tag="TCP ACK">I'm ok too </Alice>
+
+<AliceThinks v-click=1>generates a key-pair <AliceKey>(p, P)</AliceKey></AliceThinks>
+<Alice v-click=1 tag="Client Hello">Here's <AliceKey>P</AliceKey></Alice>
+
+<BobThinks v-click=2>generates a key-pair <BobKey>(q, Q)</BobKey></BobThinks>
+<Bob v-click=2 tag="Server Hello">Here's <BobKey>Q</BobKey></Bob>
+<BobThinks v-click=3>combines <AliceKey>P</AliceKey> and <BobKey>q</BobKey> to produce a shared key, <Key hue="150">K</Key></BobThinks>
+<AliceThinks v-click=3>combines <AliceKey>p</AliceKey> and <BobKey>Q</BobKey> to produce the same shared key, <Key hue="150">K</Key></AliceThinks>
+
+<Bob v-click=4 tag="Server Certificate">
+  <Encrypt key-id="K" :hue="150">Here's my certificate, <CarlosEncrypts key-id="c"><BobKey>B</BobKey>:&nbsp;bob.com</CarlosEncrypts></Encrypt>
+</Bob>
+
+---
+layout: chat
+transition: slide-up
+---
+
+<p v-click>
+A <b>certificate</b> is a signed file connecting an identity and a public key.
+</p>
+
+<p v-after>
+It's signed by a <b>certificate authority</b> (CA).
+</p>
+
+<CarlosThinks v-click >
+  wants to start a CA, so he generates a key-pair <Key hue="0">(c, C)</Key>.
+</CarlosThinks>
+
+<CarlosThinks v-click sender="Carlos" hue="0">
+  self-signs a <b>root certificate</b>: <em><CarlosEncrypts key-id="c"><Key hue="0">C</Key>:&nbsp;Carlos&rsquo; CA</CarlosEncrypts></em></CarlosThinks>
+
+<p v-click>
+These root certificates and their public keys are distributed with operating systems and browsers.
+</p>
+
+
+---
+layout: chat
+transition: slide-right
+---
+
+<Bob v-click="[1, 4]">I'd like to set up HTTPS on bob.com. Here's my public key <BobKey>B</BobKey> and a signature: <BobEncrypts key-id="b">bob.com</BobEncrypts>.</Bob>
+
+<Carlos v-click=2>Here's a token, &ldquo;b0b5m311s&rdquo;. Prove you own bob.com.</Carlos>
+
+<hr v-click=3 class="my-3">
+
+<BobThinks v-click=3>puts the token on his website</BobThinks>
+<Bob  v-click=3 tag="bob.com/.well-known/acme-challenge">b0b5m311s</Bob>
+
+<hr v-click=4 class="my-3">
+
+<BobThinks v-click=4>puts the token on his DNS host</BobThinks>
+<Bob v-click=4 tag="TXT _acme-challenge.bob.com">b0b5m311s</Bob>
+
+<Carlos v-click=5>Thanks, here's a certificate: <CarlosEncrypts key-id="c"><BobKey>B</BobKey>: bob.com</CarlosEncrypts></Carlos>
+
+---
+layout: chat
+transition: slide-left
+---
+
+<Bob tag="Server Certificate">
+  <Encrypt key-id="K" :hue="150">Here's my certificate, <CarlosEncrypts key-id="c"><BobKey>B</BobKey>:&nbsp;bob.com</CarlosEncrypts></Encrypt>
+</Bob>
+
+<AliceThinks v-click>checks her OS' root certs and finds <em><CarlosEncrypts key-id="c"><Key hue="0">C</Key>:&nbsp;Carlos&rsquo; CA</CarlosEncrypts></em></AliceThinks>
+<AliceThinks v-click>she uses <Key hue="0">C</Key> to verify the signature on Bob's certificate</AliceThinks>
+
+<Alice v-click tag="HTTP GET /">Looks good, now please send me this page...</Alice>
+
+
+---
+layout: image-left
+image: images/voynich156b.jpg
+---
+
+**That was an (abridged) TLS Handshake**
+
+<v-clicks>
+
+We rely on CAs and distributors to vouch for server identity
+
+You can run this infrastructure privately but it's a pain
+
+</v-clicks>
+
+---
+layout: image-right
+image: images/voynich124.jpg
+---
+
+## Summary
+
+<v-clicks>
+
+A lot of very smart people have let us rely on maths for trust and secrecy.
+
+Do roll your own crypto, but don't deploy it to prod.
+
+</v-clicks>
+
+---
+layout: end
+---
+
+# Questions?

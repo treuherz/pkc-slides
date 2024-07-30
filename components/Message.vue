@@ -16,7 +16,7 @@ const sideDependent = computed(() => ({
 .row {
   display: flex;
   justify-content: v-bind("sideDependent.rowJustify");
-  margin-bottom: 0.3em;
+  margin-bottom: 0.2em;
 }
 
 .layout {
@@ -47,6 +47,7 @@ const sideDependent = computed(() => ({
 
 .content {
   grid-area: content;
+  align-content: center;
 
   font-family: "Avenir Next";
   padding: 0 0.4em;
@@ -58,7 +59,8 @@ const sideDependent = computed(() => ({
 
 :deep(p) {
   margin-top: 0.1em;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.1em;
+  line-height: 1.2em;
 }
 </style>
 

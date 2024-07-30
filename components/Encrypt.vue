@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps(["keyId", "hue"]);
+const props = defineProps(["keyId", "keySub", "hue"]);
 </script>
 
 <style scoped>
@@ -21,5 +21,7 @@ const props = defineProps(["keyId", "hue"]);
   <span class="brace">&#123;</span>
   <span class="content"><slot /></span>
   <span class="brace">&#125;</span>
-  <span class="key">{{ props.keyId }}</span>
+  <span class="key"
+    >{{ props.keyId }}<sub>{{ props.keySub }}</sub></span
+  >
 </template>
