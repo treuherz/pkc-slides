@@ -1,0 +1,21 @@
+:root {
+  transition-duration: 500ms;
+}
+
+.slidev-layout.chat {
+  .slidev-vclick-target {
+    max-height: 100%;
+    transition: all;
+    transition-duration: 500ms;
+    transition-timing-function: ease;
+  }
+
+  .slidev-vclick-hidden {
+    max-height: 0;
+    margin: 0 !important;
+  }
+}
+
+.slidev-slide-content {
+  box-sizing: border-box;
+}
