@@ -484,7 +484,7 @@ transition: slide-left
 <AliceThinks v-click>checks her OS' root certs and finds <em><CarlosEncrypts key-id="c"><Key hue="0">C</Key>:&nbsp;Carlos&rsquo; CA</CarlosEncrypts></em></AliceThinks>
 <AliceThinks v-click>she uses <Key hue="0">C</Key> to verify the signature on Bob&rsquo;s certificate</AliceThinks>
 
-<Alice v-click tag="HTTP GET /"><Encrypt key-id="K" hue="0">Looks good, now please send me this page...<Encrypt></Alice>
+<Alice v-click tag="HTTP GET /"><Encrypt key-id="K" hue="0">Looks good, now please send me this page...</Encrypt></Alice>
 
 
 ---
